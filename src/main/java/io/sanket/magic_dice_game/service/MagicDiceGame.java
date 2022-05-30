@@ -1,6 +1,11 @@
 package io.sanket.magic_dice_game.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sanket.magic_dice_game.entity.Player;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -70,9 +75,24 @@ public class MagicDiceGame {
 
 
 
-    private int rollDice() {
+    private int rollDice()  {
         Random ran = new Random();
-        return ran.nextInt(6) + 1;
+
+        RestTemplate restTemplate = new RestTemplate();
+        String rollDice = "http://developer-test.hishab.io/api/v1/roll-dice";
+        ResponseEntity<String> response = restTemplate.getForEntity(rollDice, String.class );
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = null;
+        try {
+            root = mapper.readTree( response.getBody() );
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        JsonNode name = root.path("score");
+
+        return name.asInt();
     }
     public void updateScore(Map<Integer, Integer> map, int index, int dice) {
         if( players[index] )

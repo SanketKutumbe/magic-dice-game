@@ -2,6 +2,7 @@ package io.sanket.magic_dice_game.service;
 
 import io.sanket.magic_dice_game.entity.Player;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ public class GameService {
     private MagicDiceGame magicDiceGame = new MagicDiceGame(4);
 
     public Map<Integer, Integer> fetchScore() {
+
         return MagicDiceGame.getMap();
     }
 
