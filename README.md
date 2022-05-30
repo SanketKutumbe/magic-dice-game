@@ -22,4 +22,4 @@ points.
 ● It consumes online API: http://developer-test.hishab.io/api/v1/roll-dice
 
 Tech Stack used:
-Java8, REST, Spring-boot, JUnit5, Swagger
+Java8, REST, Spring-boot, JUnit5, , MAVEN, Swagger, Docker
