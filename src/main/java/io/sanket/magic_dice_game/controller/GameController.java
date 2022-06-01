@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sanket.magic_dice_game.entity.Player;
 import io.sanket.magic_dice_game.service.GameService;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,9 @@ this endpoint to retrieve the current scores of all players
 */
 
 @RestController
+@RequestMapping("/api")
+@Api(value=" ", tags={"Game API controller"})
+@Tag(name = "Game API controller")
 public class GameController {
 
     @Autowired
@@ -40,7 +45,8 @@ public class GameController {
         gameService.addPlayer(player);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/start/{id}")
+    @RequestMapping(method = RequestMethod.POST, value="/start/{id}")
+
     public void startGame(@PathVariable int id)
     {
         gameService.startGame(id);
