@@ -1,36 +1,49 @@
 package io.sanket.magic_dice_game.service;
 
 import io.sanket.magic_dice_game.entity.Player;
+import io.sanket.magic_dice_game.exception.PlayerCountException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/*
+    @author Sanket Kutumbe
+
+*/
 @Service
 public class GameService {
-
     private List<Player> playerList = new ArrayList<>();
-//            new ArrayList<>(Arrays.asList
-//            (
-//                    new Player("RAW", 1),
-//                    new Player("Mahabharat", 2)
-//            ));
-    private MagicDiceGame magicDiceGame = new MagicDiceGame(4);
 
-    public Map<Integer, Integer> fetchScore() {
+    @Autowired
+    private MagicDiceGame magicDiceGame;
 
-        return MagicDiceGame.getMap();
+    /*
+        retrieve scores of players at particular point of time
+     */
+    public Map<String, Integer> fetchScore() {
+
+        return magicDiceGame.getMap();
     }
 
+    /*
+        @params player = Player class instance
+     */
     public void addPlayer(Player player) {
         playerList.add(player);
     }
 
-    public void startGame(int score) {
-
-        magicDiceGame.start( playerList, score );
+    /*
+        @params score = Max score needed to win the game once it starts
+     */
+    public Player startGame(int score) throws PlayerCountException {
+        return magicDiceGame.start( playerList, score );
     }
+
+//    public List<Player> getPlayersList() {
+//
+//        return this.playerList;
+//    }
 }
