@@ -1,5 +1,7 @@
-io\sanket\magic_dice_game\service\GameService.class
 io\sanket\magic_dice_game\service\MagicDiceGame.class
+io\sanket\magic_dice_game\configuration\SwaggerConfig.class
+io\sanket\magic_dice_game\service\GameService.class
+io\sanket\magic_dice_game\exception\PlayerCountException.class
 io\sanket\magic_dice_game\controller\GameController.class
 io\sanket\magic_dice_game\MagicDiceGameApplication.class
 io\sanket\magic_dice_game\entity\Player.class

@@ -1,6 +1,6 @@
 package io.sanket.magic_dice_game.exception;
 
-public class PlayerCountException extends Throwable {
+public class PlayerCountException extends Exception {
 
     public PlayerCountException() {
 

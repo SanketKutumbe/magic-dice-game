@@ -19,6 +19,7 @@ public class SwaggerConfig {
                 .select()
                 .paths(regex("/api.*"))
                 .build()
+                .groupName("Magic Dice Game")
                 .apiInfo(gameInfoCustom());
     }
 

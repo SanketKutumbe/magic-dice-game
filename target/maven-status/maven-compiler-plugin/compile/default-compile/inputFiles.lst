@@ -1,5 +1,7 @@
-C:\Users\Sanket Kutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\entity\Player.java
-C:\Users\Sanket Kutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\controller\GameController.java
-C:\Users\Sanket Kutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\MagicDiceGameApplication.java
-C:\Users\Sanket Kutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\service\MagicDiceGame.java
-C:\Users\Sanket Kutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\service\GameService.java
+C:\Users\skutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\service\GameService.java
+C:\Users\skutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\controller\GameController.java
+C:\Users\skutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\exception\PlayerCountException.java
+C:\Users\skutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\MagicDiceGameApplication.java
+C:\Users\skutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\entity\Player.java
+C:\Users\skutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\service\MagicDiceGame.java
+C:\Users\skutumbe\IdeaProjects\magic-dice-game\src\main\java\io\sanket\magic_dice_game\configuration\SwaggerConfig.java

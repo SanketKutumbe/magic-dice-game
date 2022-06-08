@@ -13,7 +13,6 @@
 
     <groupId>io.sanket</groupId>
     <artifactId>magic_dice_game</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -68,10 +67,10 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-<!--            <plugin>-->
+            <plugin>
 <!--                &lt;!&ndash; Build an executable JAR &ndash;&gt;-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-jar-plugin</artifactId>-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
 <!--                <configuration>-->
 <!--                    <archive>-->
 <!--                        <manifest>-->
@@ -81,9 +80,11 @@
 <!--                        </manifest>-->
 <!--                    </archive>-->
 <!--                </configuration>-->
-<!--            </plugin>-->
+            </plugin>
 
         </plugins>
+
+        <finalName>magic-dice-game</finalName>
     </build>
 
 </project>

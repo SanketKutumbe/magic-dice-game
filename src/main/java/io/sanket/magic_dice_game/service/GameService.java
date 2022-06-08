@@ -15,7 +15,7 @@ import java.util.Map;
 */
 @Service
 public class GameService {
-    private List<Player> playerList = new ArrayList<>();
+    private final List<Player> playerList = new ArrayList<>();
 
     @Autowired
     private MagicDiceGame magicDiceGame;
@@ -24,8 +24,7 @@ public class GameService {
         retrieve scores of players at particular point of time
      */
     public Map<String, Integer> fetchScore() {
-
-        return magicDiceGame.getMap();
+        return magicDiceGame.getScoreMap();
     }
 
     /*

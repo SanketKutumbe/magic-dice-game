@@ -36,17 +36,18 @@ import java.util.*;
 public class MagicDiceGame {
 
     // stores total number of players
-    private static int playerCount;
+    private int playerCount = 0;
 
     // stores players
-    private static List<Player> playerList;
+    private List<Player> playerList = null;
 
     // stores insertion order of players and scores
-    private static Map<Integer, Integer> map = new HashMap<>();
+    private Map<Integer, Integer> map;
 
     // stores status of players, whether they are eligible (TRUE) or not-eligible (FALSE)
-    private static boolean[] players;
+    private boolean[] players = null;
 
+    private static MagicDiceGame magicDiceGame;
 
     public int getPlayerCount() { return this.playerCount; }
 
@@ -54,19 +55,31 @@ public class MagicDiceGame {
         this.playerCount = playerCount;
     }
 
-    public Map<String, Integer> getMap() {
-
-        Map<String, Integer> playerMap = new HashMap<>();
-        for(int i = 0; i < playerCount; i++)
-        {
-            playerMap.put(playerList.get(i).getName(), map.get(i));
-        }
-        return playerMap;
+    public List<Player> getPlayerList() {
+        return magicDiceGame.playerList;
     }
 
+    public void setPlayerList(List<Player> playerList) {
+        magicDiceGame.playerList = new ArrayList<>(playerList);
+    }
+    public Map<Integer, Integer> getMap() {
+        return magicDiceGame.map;
+    }
+
+    public void setMap(Map<Integer, Integer> map) {
+
+        magicDiceGame.map = map;
+        for(int i = 0; i < magicDiceGame.getPlayerCount(); i++)
+            magicDiceGame.map.put(i, 0);
+    }
 
     public boolean[] getPlayers() {
-        return this.players;
+        return magicDiceGame.players;
+    }
+
+    public void setPlayers(int capacity) {
+        magicDiceGame.players = new boolean[capacity+1];
+        Arrays.fill(magicDiceGame.players, false);
     }
 
     /*
@@ -75,15 +88,17 @@ public class MagicDiceGame {
           If it is 6 and if user is not eligible to play until now then it makes it eligible by updating boolean array of players.
 
           @class_members boolean players[] = by default, all players are not-eligible to play, until face-value of dice is 6
+          @params index = represent index for boolean players array
+          @params dice = face-value of magic dice
     */
 
     private boolean isSix(int index, int dice) {
 
         if( dice==6 )
         {
-            if( !players[index] )
-                players[index] = true;
-            System.out.println("Player "+ playerList.get(index).getName() + " got 6, Roll Dice Again");
+            if( !magicDiceGame.getPlayers()[index] )
+                magicDiceGame.getPlayers()[index] = true;
+            System.out.println("Player "+ magicDiceGame.getPlayerList().get(index).getName() + " got 6, Roll Dice Again");
         }
         return dice==6;
     }
@@ -100,8 +115,9 @@ public class MagicDiceGame {
     {
         if(followedSix > 0 )
         {
-            players[index] = false;
-            System.out.println("For Player "+ playerList.get(index).getName() + " ,on dice, 4 after 6 came, so player is not eligible until it gets 6");
+            magicDiceGame.getPlayers()[index] = false;
+            System.out.println("For Player "+ magicDiceGame.getPlayerList().get(index).getName() + " ,on dice, 4 after 6 " +
+                    "came, so player is not eligible until it gets 6");
             return true;
         }
         else
@@ -150,10 +166,10 @@ public class MagicDiceGame {
      */
 
     public void updateScore(Map<Integer, Integer> map, int index, int dice) {
-        if( players[index] )
-            map.put(index, map.get(index) + dice);
+        if( magicDiceGame.getPlayers()[index] )
+            map.put(index, magicDiceGame.getMap().get(index) + dice);
         else
-            System.out.println("Function failed to execute updateScore() as Player "+playerList.get(index).getName()+" is not eligible");
+            System.out.println("Function failed to execute updateScore() as Player "+magicDiceGame.getPlayerList().get(index).getName()+" is not eligible");
     }
 
     /*
@@ -162,24 +178,22 @@ public class MagicDiceGame {
         @params playerList = List of participating players
         @params score = Max score needed to win the game once it starts
      */
-    public void initializeGame(List<Player> playerList, int score) {
+    public static void initializeGame(List<Player> playerList, int score) throws PlayerCountException {
 
-        playerCount = playerList.size();
+        // stores insertion order of players and scores
 
-        try
-        {
-            if(this.playerCount < 2 || this.playerCount > 4) {
-                throw new PlayerCountException();
-            }
-        } catch (PlayerCountException e) {
-            throw new RuntimeException(e);
-        } finally {
-            players = new boolean[playerCount + 1];
-            MagicDiceGame.playerList = playerList;
-            Arrays.fill(players, false);
-            for(int i = 0; i < playerCount; i++)
-                map.put(i, 0);
+        // stores status of players, whether they are eligible (TRUE) or not-eligible (FALSE)
+
+        magicDiceGame = new MagicDiceGame();
+        magicDiceGame.setPlayerCount(playerList.size());
+
+        if (magicDiceGame.getPlayerCount() < 2 || magicDiceGame.getPlayerCount() > 4) {
+            throw new PlayerCountException();
         }
+
+        magicDiceGame.setPlayerList(playerList);
+        magicDiceGame.setMap(new HashMap<>());
+        magicDiceGame.setPlayers(magicDiceGame.getPlayerCount() + 1);
     }
 
     /*
@@ -191,10 +205,9 @@ public class MagicDiceGame {
         @params score = Max score needed to win the game once it starts
      */
 
-    public Player start(List<Player> playerList, int score ) {
+    public Player start(List<Player> playerList, int score ) throws PlayerCountException {
 
-        MagicDiceGame magicDice = new MagicDiceGame();
-        magicDice.initializeGame(playerList, score);
+        initializeGame(playerList, score);
 
         Player result=null;
 
@@ -204,31 +217,30 @@ public class MagicDiceGame {
 
         while( total < score )
         {
-            for (int i = 0; i < playerList.size(); ) {
+            for (int i = 0; i < magicDiceGame.getPlayerCount(); ) {
 
-                dice = magicDice.rollDice();
+                dice = magicDiceGame.rollDice();
 
-                if ( magicDice.isSix(i, dice) ) {
+                if ( magicDiceGame.isSix(i, dice) ) {
                     if (countSix == 0) {
                         countSix++;
-                        continue;
                     }
                 } else {
-                    if (magicDice.isFour(dice)) {
+                    if (magicDiceGame.isFour(dice)) {
 
-                        if (!magicDice.fourRollAfterSix(i, countSix))
-                            magicDice.updateScore(map, i, -4);
+                        if (!magicDiceGame.fourRollAfterSix(i, countSix))
+                            magicDiceGame.updateScore(magicDiceGame.getMap(), i, -4);
 
-                    } else magicDice.updateScore(map, i, dice);
+                    } else magicDiceGame.updateScore(magicDiceGame.getMap(), i, dice);
 
-                    if (map.get(i) > total) total = map.get(i);
+                    if (magicDiceGame.getMap().get(i) > total) total = magicDiceGame.getMap().get(i);
 
                     if (total >= score) {
-                        result=playerList.get(i);
+                        result=magicDiceGame.getPlayerList().get(i);
                         break;
                     }
 
-                    System.out.println("Player name: "+playerList.get(i).getName()+" Total Score: "+map.get(i)+", Current Value of Dice: "+dice);
+                    System.out.println("Player name: "+magicDiceGame.getPlayerList().get(i).getName()+" Total Score: "+magicDiceGame.getMap().get(i)+", Current Value of Dice: "+dice);
 
                     i++;
                     countSix = 0;
@@ -242,6 +254,19 @@ public class MagicDiceGame {
         }
 
         return result;
+    }
+
+    /*
+        Returns map which has player-name and corresponding score
+     */
+    public Map<String, Integer> getScoreMap() {
+
+        Map<String, Integer> playerMap = new HashMap<>();
+        for(int i = 0; i < magicDiceGame.getPlayerCount(); i++)
+        {
+            playerMap.put(magicDiceGame.getPlayerList().get(i).getName(), magicDiceGame.getMap().get(i));
+        }
+        return playerMap;
     }
 
 
